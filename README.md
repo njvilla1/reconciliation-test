@@ -19,5 +19,5 @@ Produces outfile (data/recon.out)
 Unit testing:
 ```bash
 cd reconciliationt-test
-python -m unittest discover ./test
+python -m unittest discover ./tests
 ```
