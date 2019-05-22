@@ -1,8 +1,6 @@
-#%%
 from enum import Enum
 import re
 
-#%%
 class Action(Enum):
     BUY = 1
     SELL = 2
@@ -11,6 +9,7 @@ class Action(Enum):
     DIVIDEND = 5
 
 class Position ( object ):
+
     def __init__(self, ticker, shares):
         self.ticker = ticker
         self.shares = shares
@@ -29,6 +28,14 @@ class Portfolio( object ):
         self.cash = cash
 
     def process_transaction(self, transaction):
+        ''' 
+        Processes single transaction against current state of 
+        portfolio (positions + cash).
+        DEPOSIT/DIVIDEND -> +cash
+        FEE -> -cash
+        BUY -> -cash, +shares
+        SELL -> +cash, -shares
+        '''
         if transaction.ticker != 'Cash' and transaction.ticker not in self.positions:
             self.positions[transaction.ticker] = 0
 
@@ -47,7 +54,11 @@ class Portfolio( object ):
                 del self.positions[transaction.ticker]
             
     def reconcile(self, other_prtf):
-
+        ''' 
+        Reconciles current state of positions and cash against another
+        Portfolio object. Returns a dict containing all tickers and 'Cash' as
+        keys, and the diff per ticker between the two portfolio positions as values
+        '''
         diffs = {}
         for ticker in set(list(self.positions.keys()) + list(other_prtf.positions.keys())):
             ticker_diff = other_prtf.positions.get(ticker, 0.0) - self.positions.get(ticker, 0.0)

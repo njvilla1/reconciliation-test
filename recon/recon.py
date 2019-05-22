@@ -5,6 +5,7 @@ import argparse
 import logging
 import sys
 
+# Setup logging
 log = logging.getLogger(__name__)
 log.setLevel(logging.DEBUG)
 handler = logging.StreamHandler(sys.stdout)
@@ -13,6 +14,12 @@ handler.setFormatter(formatter)
 log.addHandler(handler)
 
 def parse_portfolio_text(prtf_text):
+    ''' 
+    Parse reconciliation text file which contains alternating
+    position lists (portfolio states) and daily transaction lists. Returns
+    dicts of positions, transactions keyed by day index where the value is the 
+    position or transaction list from that day
+    '''
     sections = prtf_text.split('\n\n')
     data = [s.strip().split('\n') for s in sections]
     
@@ -31,6 +38,12 @@ def parse_portfolio_text(prtf_text):
     return positions, transactions
 
 def reconcile(initial_positions_day=0, compare_to_day=1, in_file='./data/recon.in', out_file='./data/recon.out'):
+    '''
+    Main entry point for positional reconciliation. 
+    Parses command line arguments for which days to compare. Transactions will be 
+    accounted for all days between the dates being compared
+    Writes diff to outfile in format specified
+    '''    
 
     log.debug('Reading file {}'.format(in_file))
     with open(in_file, 'r') as f:
