@@ -3,10 +3,12 @@ This module will read an input file (./data/recon.in), which contains postition 
 
 Tested with Python version 3.6.4
 
-usage: recon.py [-h] [--initial_positions_day INITIAL_POSITIONS_DAY]
+usage: 
+```bash
+python recon.py [-h] [--initial_positions_day INITIAL_POSITIONS_DAY]
                 [--compare_to_day COMPARE_TO_DAY] [--in_file IN_FILE]
                 [--out_file OUT_FILE]
-
+```
 e.g.
 ```bash
 cd reconciliation-test

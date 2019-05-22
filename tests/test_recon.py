@@ -1,5 +1,7 @@
 import sys
-sys.path.insert(0, "./recon")
+sys.path.insert(0, "./recon") #Inserts recon module dir to path in order to import models and recon
+# unfortunately this means unit tests must be run from git repo base directory
+# This avoids having to install module to local site-packages during development/testing
 
 import recon
 from models import Portfolio
