@@ -43,9 +43,20 @@ class Portfolio( object ):
         elif transaction.action == Action.SELL:
             self.positions[transaction.ticker] -= transaction.shares
             self.cash += transaction.notional
+            if self.positions[transaction.ticker] == 0.0:
+                del self.positions[transaction.ticker]
             
     def reconcile(self, other_prtf):
-        raise NotImplementedError()        
+
+        diffs = {}
+        for ticker in set(list(self.positions.keys()) + list(other_prtf.positions.keys())):
+            ticker_diff = other_prtf.positions.get(ticker, 0.0) - self.positions.get(ticker, 0.0)
+            if abs(ticker_diff) > 0.0: diffs[ticker] = ticker_diff
+        
+        cash_diff = other_prtf.cash - self.cash
+        if abs(cash_diff) > 0.0: diffs['Cash'] = cash_diff
+
+        return diffs
 
     @classmethod
     def from_positions(cls, positions):
